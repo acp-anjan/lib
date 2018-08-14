@@ -21,7 +21,7 @@ class SeaofBTCapp(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, PubAdd, PubView, PubUpdate):
+        for F in (StartPage, PubAdd, PubView, PubUpdate, BookAdd, BookView, StudentAdd):
 
             frame = F(container, self)
 
@@ -52,10 +52,21 @@ class StartPage(tk.Frame):
                             command=lambda: controller.show_frame(PubView))
         button2.pack()
 
-        button2 = tk.Button(self, text="Update Publisher",
+        button3 = tk.Button(self, text="Update Publisher",
                             command=lambda: controller.show_frame(PubUpdate))
-        button2.pack()
+        button3.pack()
 
+        button4 = tk.Button(self, text="Add Book",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.pack()
+
+        button5 = tk.Button(self, text="View Book",
+                            command=lambda: controller.show_frame(BookView))
+        button5.pack()
+
+        button5 = tk.Button(self, text="Add Student",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button5.pack()
 
 class PubAdd(tk.Frame):
 
@@ -233,6 +244,165 @@ class PubUpdate(tk.Frame):
         tkinter.messagebox.showinfo("Success", "Publisher updated")
 
 
+class BookAdd(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.heading = tk.Label(self, text="Add Book", font=('arial 40 bold'), fg='blue')
+        self.heading.place(x=400,y=0)
+
+        c.execute("CREATE TABLE IF NOT EXISTS book (book_id INTEGER PRIMARY KEY AUTOINCREMENT, book_name TEXT NOT NULL, num_book INTEGER NOT NULL, pub_id INTEGER NOT NULL, FOREIGN KEY(pub_id) REFERENCES publisher(pub_id) ON UPDATE CASCADE)")
+        # conn.commit()
+
+        #label for windows
+        self.name_l = tk.Label(self, text="Enter Book Name", font=('arial 18 bold'))
+        self.name_l.place(x=10, y=70)
+
+        self.num_book_l = tk.Label(self, text="Enter No. of Books", font=('arial 18 bold'))
+        self.num_book_l.place(x=10, y=120)
+
+        self.pub_id_l = tk.Label(self, text="Enter Publisher ID", font=('arial 18 bold'))
+        self.pub_id_l.place(x=10, y=170)
+
+
+        # entry
+        self.name_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.name_e.place(x=270, y=70)
+
+        self.num_book_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.num_book_e.place(x=270, y=120)
+
+        self.pub_id_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.pub_id_e.place(x=270, y=170)
+
+        #button to add to database
+        self.btn_add = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
+        self.btn_add.place(x=370, y=370)
+
+        #btn clear
+        self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
+        self.btn_clear.place(x=358, y = 420)
+ 
+    def clear_all(self, *args, **kwargs):
+        self.name_e.delete(0, tk.END)
+        self.num_book_e.delete(0, tk.END)
+        self.pub_id_e.delete(0, tk.END)
+        
+    #get method
+    def get_items(self, *args, **kwargs):
+
+        #get from entries
+        self.book_name = self.name_e.get()
+        self.num_book = self.num_book_e.get()
+        self.pub_id = self.pub_id_e.get()
+
+        if self.book_name == '' and self.num_book == '' and self.pub_id == '':
+            tkinter.messagebox.showinfo("Error","Please fill the entries")
+        else:
+            
+            sql = "insert into book (book_name, num_book, pub_id) values (?,?,?)"
+            c.execute(sql, (self.book_name, self.num_book, self.pub_id))
+            conn.commit()
+            
+            tkinter.messagebox.showinfo("Success", "Successfully book added!")
+
+
+class BookView(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.heading = tk.Label(self, text="View Books", font=('arial 40 bold'), fg='blue')
+        self.heading.place(x=400,y=0)
+
+        
+   
+        
+        self.tree = ttk.Treeview(self, height=20, columns=3)
+        self.tree.place(x=10, y=200)
+        self.tree["column"]=('1','2','3','4','5','6')
+        self.tree.heading('1',text="Book_id", anchor=tk.W)
+        self.tree.heading('2',text="Pub_id", anchor=tk.W) 
+        self.tree.heading('3', text="Book_name", anchor=tk.W)
+        self.tree.heading('4', text="Pub_name", anchor=tk.W)
+        self.tree.heading('5', text="Adderss", anchor=tk.W)
+        self.tree.heading('6', text="num_book", anchor=tk.W)
+
+
+        items = self.tree.get_children()
+        for item in items:
+            self.tree.delete(item)
+        query = 'select book.book_id, publisher.pub_id, book.book_name, publisher.pub_name, publisher.address, book.num_book from book inner join publisher on book.pub_id = publisher.pub_id'
+        entries = self.execute_db_query(query)
+        for row in entries:
+            self.tree.insert('',tk.END,values=row)
+
+    def execute_db_query(self, query, parameters=()):
+        with sqlite3.connect('lib.db') as conn:
+            cursor = conn.cursor()
+            query_result = cursor.execute(query, parameters)
+            conn.commit()
+        return query_result
+
+
+class StudentAdd(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.heading = tk.Label(self, text="Add Student", font=('arial 40 bold'), fg='blue')
+        self.heading.place(x=400,y=0)
+
+        c.execute("CREATE TABLE IF NOT EXISTS student (roll INTEGER PRIMARY KEY, st_name TEXT NOT NULL, faculty TEXT NOT NULL, CONSTRAINT roll_unique UNIQUE (roll))")
+
+        #label for windows
+        self.roll_l = tk.Label(self, text="Enter Roll No.", font=('arial 18 bold'))
+        self.roll_l.place(x=10, y=70)
+
+        self.st_name_l = tk.Label(self, text="Enter Student Name", font=('arial 18 bold'))
+        self.st_name_l.place(x=10, y=120)
+
+        self.faculty_l = tk.Label(self, text="Enter Faculty", font=('arial 18 bold'))
+        self.faculty_l.place(x=10, y=170)
+
+
+        # entry
+        self.roll_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.roll_e.place(x=270, y=70)
+
+        self.st_name_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.st_name_e.place(x=270, y=120)
+
+        self.faculty_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.faculty_e.place(x=270, y=170)
+
+        #button to add to database
+        self.btn_add = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
+        self.btn_add.place(x=370, y=370)
+
+        #btn clear
+        self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
+        self.btn_clear.place(x=358, y = 420)
+ 
+    def clear_all(self, *args, **kwargs):
+        self.roll_e.delete(0, tk.END)
+        self.st_name_e.delete(0, tk.END)
+        self.faculty_e.delete(0, tk.END)
+        
+    #get method
+    def get_items(self, *args, **kwargs):
+
+        #get from entries
+        self.roll = self.roll_e.get()
+        self.st_name = self.st_name_e.get()
+        self.faculty = self.faculty_e.get()
+
+        if self.roll == '' and self.st_name == '' and self.faculty == '':
+            tkinter.messagebox.showinfo("Error","Please fill the entries")
+        else:
+            try:
+                sql = "insert into student (roll, st_name, faculty) values (?,?,?)"
+                c.execute(sql, (self.roll, self.st_name, self.faculty))
+                conn.commit()
+                
+                tkinter.messagebox.showinfo("Success", "Successfully Student Added!")
+            except sqlite3.IntegrityError: 
+                tkinter.messagebox.showerror("Error","Check roll no once again!!!")
 
 app = SeaofBTCapp()
 app.geometry('1366x768+0+0')

@@ -19,7 +19,7 @@ class PubAdd:
         self.heading.place(x=400,y=0)
 
         # query ="CREATE TABLE book IF NOT EXISTS (book_id INTEGER PRIMARY KEY AUTOINCREMENT, book_name TEXT NOT NULL, num_book INTEGER NOT NULL, pub_id INTEGER NOT NULL, FOREIGN KEY(pub_id) REFERENCES publisher(pub_id) ON UPDATE CASCADE)"
-        c.execute("CREATE TABLE IF NOT EXISTS book (book_id INTEGER PRIMARY KEY AUTOINCREMENT, book_name TEXT NOT NULL, num_book INTEGER NOT NULL, pub_id INTEGER NOT NULL, FOREIGN KEY(pub_id) REFERENCES publisher(pub_id) ON UPDATE CASCADE)")
+        c.execute("CREATE TABLE IF NOT EXISTS issue ()")
         # conn.commit()
 
         # self.i = Label(master, text="ID is reached upto: " +str(id), font=('arial 18 bold'))
