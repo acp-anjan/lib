@@ -43,44 +43,48 @@ class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-        label = tk.Label(self, text="Start Page", font=LARGE_FONT)
+        label = tk.Label(self, text="Menu", font=('arial 40 bold'), fg='brown')
         label.pack(pady=10,padx=10)
 
-        button = tk.Button(self, text="Add Publisher",
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
-        button.pack()
+        button.place(x=1000, y= 70)
 
-        button2 = tk.Button(self, text="View Publisher",
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubView))
-        button2.pack()
+        button2.place(x=1000, y= 120)
 
-        button3 = tk.Button(self, text="Update Publisher",
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubUpdate))
-        button3.pack()
+        button3.place(x=1000, y= 170)
 
-        button4 = tk.Button(self, text="Add Book",
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(BookAdd))
-        button4.pack()
+        button4.place(x=1000, y= 220)
 
-        button5 = tk.Button(self, text="View Book",
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(BookView))
-        button5.pack()
+        button5.place(x=1000, y= 270)
 
-        button6 = tk.Button(self, text="Add Student",
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(StudentAdd))
-        button6.pack()
+        button6.place(x=1000, y= 320)
 
-        button7 = tk.Button(self, text="Issue Book",
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(IssueBook))
-        button7.pack()
+        button7.place(x=1000, y= 370)
 
-        button8 = tk.Button(self, text="View Issues",
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(ViewIssue))
-        button8.pack()
+        button8.place(x=1000, y= 420)
 
-        button9 = tk.Button(self, text="Return Books",
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(Return))
-        button9.pack()
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
 
 class PubAdd(tk.Frame):
 
@@ -118,13 +122,46 @@ class PubAdd(tk.Frame):
         btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
         btn_clear.place(x=358, y = 420)
 
-        button1 = tk.Button(self, text="Main Menu",
-                            command=lambda: controller.show_frame(StartPage))
-        button1.place(x=1150, y=70)
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubAdd))
+        button.place(x=1000, y= 70)
 
-        button2 = tk.Button(self, text="View Publisher",
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubView))
-        button2.place(x=1150, y=110)
+        button2.place(x=1000, y= 120)
+
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubUpdate))
+        button3.place(x=1000, y= 170)
+
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.place(x=1000, y= 220)
+
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookView))
+        button5.place(x=1000, y= 270)
+
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button6.place(x=1000, y= 320)
+
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.place(x=1000, y= 370)
+
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.place(x=1000, y= 420)
+
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(Return))
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
+        
         
     def clear_all(self, *args, **kwargs):
         self.name_e.delete(0, tk.END)
@@ -156,13 +193,45 @@ class PubView(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         
-        button1 = tk.Button(self, text="Main Menu",
-                            command=lambda: controller.show_frame(StartPage))
-        button1.place(x=1150, y=70)
-
-        button2 = tk.Button(self, text="Add Publisher",
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
-        button2.place(x=1150, y=110)
+        button.place(x=1000, y= 70)
+
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubView))
+        button2.place(x=1000, y= 120)
+
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubUpdate))
+        button3.place(x=1000, y= 170)
+
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.place(x=1000, y= 220)
+
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookView))
+        button5.place(x=1000, y= 270)
+
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button6.place(x=1000, y= 320)
+
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.place(x=1000, y= 370)
+
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.place(x=1000, y= 420)
+
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(Return))
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
 
         self.heading = tk.Label(self, text="View Publisher", font=('arial 40 bold'), fg='blue')
         self.heading.place(x=400,y=0)
@@ -226,6 +295,45 @@ class PubUpdate(tk.Frame):
         self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
         self.btn_clear.place(x=358, y = 420)
 
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubAdd))
+        button.place(x=1000, y= 70)
+
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubView))
+        button2.place(x=1000, y= 120)
+
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubUpdate))
+        button3.place(x=1000, y= 170)
+
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.place(x=1000, y= 220)
+
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookView))
+        button5.place(x=1000, y= 270)
+
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button6.place(x=1000, y= 320)
+
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.place(x=1000, y= 370)
+
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.place(x=1000, y= 420)
+
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(Return))
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
         
     def clear_all(self, *args, **kwargs):
         self.id_e.delete(0, tk.END)
@@ -295,7 +403,47 @@ class BookAdd(tk.Frame):
         #btn clear
         self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
         self.btn_clear.place(x=358, y = 420)
- 
+
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubAdd))
+        button.place(x=1000, y= 70)
+
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubView))
+        button2.place(x=1000, y= 120)
+
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubUpdate))
+        button3.place(x=1000, y= 170)
+
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.place(x=1000, y= 220)
+
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookView))
+        button5.place(x=1000, y= 270)
+
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button6.place(x=1000, y= 320)
+
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.place(x=1000, y= 370)
+
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.place(x=1000, y= 420)
+
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(Return))
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
+
     def clear_all(self, *args, **kwargs):
         self.name_e.delete(0, tk.END)
         self.num_book_e.delete(0, tk.END)
@@ -327,7 +475,45 @@ class BookView(tk.Frame):
         self.heading.place(x=400,y=0)
 
         
-   
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubAdd))
+        button.place(x=1000, y= 70)
+
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubView))
+        button2.place(x=1000, y= 120)
+
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubUpdate))
+        button3.place(x=1000, y= 170)
+
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.place(x=1000, y= 220)
+
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookView))
+        button5.place(x=1000, y= 270)
+
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button6.place(x=1000, y= 320)
+
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.place(x=1000, y= 370)
+
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.place(x=1000, y= 420)
+
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(Return))
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
         
         self.tree = ttk.Treeview(self, height=20, columns=3)
         self.tree.place(x=10, y=200)
@@ -392,6 +578,46 @@ class StudentAdd(tk.Frame):
         #btn clear
         self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
         self.btn_clear.place(x=358, y = 420)
+
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubAdd))
+        button.place(x=1000, y= 70)
+
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubView))
+        button2.place(x=1000, y= 120)
+
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubUpdate))
+        button3.place(x=1000, y= 170)
+
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.place(x=1000, y= 220)
+
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookView))
+        button5.place(x=1000, y= 270)
+
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button6.place(x=1000, y= 320)
+
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.place(x=1000, y= 370)
+
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.place(x=1000, y= 420)
+
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(Return))
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
  
     def clear_all(self, *args, **kwargs):
         self.roll_e.delete(0, tk.END)
@@ -500,6 +726,46 @@ class IssueBook(tk.Frame):
         #button to add to database
         self.btn_add = tk.Button(self, text="Issue Book", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
         self.btn_add.place(x=600, y=600)
+
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubAdd))
+        button.place(x=1000, y= 70)
+
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubView))
+        button2.place(x=1000, y= 120)
+
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubUpdate))
+        button3.place(x=1000, y= 170)
+
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.place(x=1000, y= 220)
+
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookView))
+        button5.place(x=1000, y= 270)
+
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button6.place(x=1000, y= 320)
+
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.place(x=1000, y= 370)
+
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.place(x=1000, y= 420)
+
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(Return))
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
         
     def search(self, *args, **kwargs):
         sql = "select * from book where book_id = ?"
@@ -568,6 +834,46 @@ class ViewIssue(tk.Frame):
 
         self.btn_go = tk.Button(self, text="Go!!!", width=25, height=2, bg="steelblue", fg="white", command=self.go)
         self.btn_go.place(x=1000, y=70)
+
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubAdd))
+        button.place(x=1000, y= 70)
+
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubView))
+        button2.place(x=1000, y= 120)
+
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubUpdate))
+        button3.place(x=1000, y= 170)
+
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.place(x=1000, y= 220)
+
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookView))
+        button5.place(x=1000, y= 270)
+
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button6.place(x=1000, y= 320)
+
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.place(x=1000, y= 370)
+
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.place(x=1000, y= 420)
+
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(Return))
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
 
         self.tree = ttk.Treeview(self,height=20, columns=3)
         self.tree.place(x=10, y=200)
@@ -644,9 +950,45 @@ class Return(tk.Frame):
         self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
         self.btn_clear.place(x=500, y = 420)
 
-        button2 = tk.Button(self, text="RESET",
+        button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubAdd))
+        button.place(x=1000, y= 70)
+
+        button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubView))
+        button2.place(x=1000, y= 120)
+
+        button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(PubUpdate))
+        button3.place(x=1000, y= 170)
+
+        button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookAdd))
+        button4.place(x=1000, y= 220)
+
+        button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(BookView))
+        button5.place(x=1000, y= 270)
+
+        button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StudentAdd))
+        button6.place(x=1000, y= 320)
+
+        button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.place(x=1000, y= 370)
+
+        button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.place(x=1000, y= 420)
+
+        button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(Return))
-        button2.place(x=1150, y=110)
+        button9.place(x=1000, y= 470)
+
+        button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
+                            command=lambda: controller.show_frame(StartPage))
+        button10.place(x=1000, y= 520)
         
     def search(self, *args, **kwargs):
         sql1 = "select issue.roll, issue.book_id, book.book_name, issue.i_date, issue.e_date from issue inner join book on issue.book_id = book.book_id  where (issue.issue_id= (?))"
