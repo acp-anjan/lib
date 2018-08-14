@@ -44,7 +44,13 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
         label = tk.Label(self, text="Menu", font=('arial 40 bold'), fg='brown')
-        label.pack(pady=10,padx=10)
+        label.pack(pady=10,padx=10)     
+
+        photo = tk.PhotoImage(file='lib1.png')
+        label = tk.Label(self,image=photo)
+        label.image = photo
+        label.place(x=250, y=150)
+
 
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
@@ -93,8 +99,6 @@ class PubAdd(tk.Frame):
         heading = tk.Label(self, text="Add Publisher", font=('arial 40 bold'), fg='blue')
         heading.place(x=400,y=0)
 
-        # self.i = Label(master, text="ID is reached upto: " +str(id), font=('arial 18 bold'))
-        # self.i.place(x=10, y=40)
         #label for windows
         name_l = tk.Label(self, text="Enter Publisher", font=('arial 18 bold'))
         name_l.place(x=10, y=70)
@@ -104,23 +108,18 @@ class PubAdd(tk.Frame):
 
         # entry
         self.name_e = tk.Entry(self, width=25, font=('arial 18 bold'))
-        self.name_e.place(x=270, y=70)
+        self.name_e.place(x=350, y=70)
 
         self.address_e = tk.Entry(self, width=25, font=('arial 18 bold'))
-        self.address_e.place(x=270, y=120)
+        self.address_e.place(x=350, y=120)
 
         #button to add to database
         btn_add = tk.Button(self, text="Add publisher", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
-        btn_add.place(x=370, y=370)
-
-        # text box
-        # self.tBox = Text(master, width=60, height=17)
-        # self.tBox.place(x=720, y=70)
-        # self.tBox.insert(END, "ID has reached upto: " +str(id))
+        btn_add.place(x=350, y=170)
 
         #btn clear
-        btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
-        btn_clear.place(x=358, y = 420)
+        btn_clear = tk.Button(self, text="Clear all fields", width=25, height=2, bg="lightgreen", fg='white', command=self.clear_all)
+        btn_clear.place(x=350, y = 220)
 
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
@@ -183,7 +182,7 @@ class PubAdd(tk.Frame):
             conn.commit()
             
             tkinter.messagebox.showinfo("Success", "Successfully publisher added!")
-
+            conn.close()
 
         
 
@@ -192,6 +191,9 @@ class PubView(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+
+        conn = sqlite3.connect('lib.db')
+        c = conn.cursor()
         
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
@@ -250,6 +252,7 @@ class PubView(tk.Frame):
         entries = self.execute_db_query(query)
         for row in entries:
             tree.insert('',tk.END,values=row)
+        conn.close()
 
     def execute_db_query(self, query, parameters=()):
         with sqlite3.connect('lib.db') as conn:
@@ -266,13 +269,13 @@ class PubUpdate(tk.Frame):
         self.heading.place(x=400,y=0)
 
         self.id_l = tk.Label(self, text="Enter ID", font=('arial 18 bold'))
-        self.id_l.place(x=0, y=0)
+        self.id_l.place(x=10, y=70)
 
-        self.id_e = tk.Entry(self, font=('arial 18 bold'), width=10)
-        self.id_e.place(x=300, y=0)
+        self.id_e = tk.Entry(self, font=('arial 18 bold'), width=10, )
+        self.id_e.place(x=380, y=70)
 
         self.btn_search = tk.Button(self, text="Search", width=15, height=2, bg='brown', command=self.search)
-        self.btn_search.place(x=550, y=70)
+        self.btn_search.place(x=560, y=70)
 
         self.name_l = tk.Label(self, text="Enter Publisher", font=('arial 18 bold'))
         self.name_l.place(x=10, y=120)
@@ -289,11 +292,11 @@ class PubUpdate(tk.Frame):
 
         #button to add to database
         self.btn_update = tk.Button(self, text="Update publisher", width=25, height=2, bg="steelblue", fg="white", command=self.update)
-        self.btn_update.place(x=370, y=370)
+        self.btn_update.place(x=380, y=220)
 
         #btn clear
-        self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
-        self.btn_clear.place(x=358, y = 420)
+        self.btn_clear = tk.Button(self, text="Clear all fields", width=25, height=2, bg="lightgreen", fg='white', command=self.clear_all)
+        self.btn_clear.place(x=380, y = 270)
 
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
@@ -398,11 +401,11 @@ class BookAdd(tk.Frame):
 
         #button to add to database
         self.btn_add = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
-        self.btn_add.place(x=370, y=370)
+        self.btn_add.place(x=270, y=220)
 
         #btn clear
-        self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
-        self.btn_clear.place(x=358, y = 420)
+        self.btn_clear = tk.Button(self, text="Clear all fields", width=25, height=2, bg="lightgreen", fg='white', command=self.clear_all)
+        self.btn_clear.place(x=270, y = 270)
 
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
@@ -477,46 +480,46 @@ class BookView(tk.Frame):
         
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
-        button.place(x=1000, y= 70)
+        button.place(x=10, y= 550)
 
         button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubView))
-        button2.place(x=1000, y= 120)
+        button2.place(x=250, y= 550)
 
         button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubUpdate))
-        button3.place(x=1000, y= 170)
+        button3.place(x=490, y= 550)
 
         button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(BookAdd))
-        button4.place(x=1000, y= 220)
+        button4.place(x=730, y= 550)
 
         button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(BookView))
-        button5.place(x=1000, y= 270)
+        button5.place(x=970, y= 550)
 
         button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(StudentAdd))
-        button6.place(x=1000, y= 320)
+        button6.place(x=10, y= 610)
 
         button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(IssueBook))
-        button7.place(x=1000, y= 370)
+        button7.place(x=250, y= 610)
 
         button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(ViewIssue))
-        button8.place(x=1000, y= 420)
+        button8.place(x=490, y= 610)
 
         button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(Return))
-        button9.place(x=1000, y= 470)
+        button9.place(x=730, y= 610)
 
         button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(StartPage))
-        button10.place(x=1000, y= 520)
+        button10.place(x=970, y= 610)
         
         self.tree = ttk.Treeview(self, height=20, columns=3)
-        self.tree.place(x=10, y=200)
+        self.tree.place(x=10, y=100)
         self.tree["column"]=('1','2','3','4','5','6')
         self.tree.heading('1',text="Book_id", anchor=tk.W)
         self.tree.heading('2',text="Pub_id", anchor=tk.W) 
@@ -573,11 +576,11 @@ class StudentAdd(tk.Frame):
 
         #button to add to database
         self.btn_add = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
-        self.btn_add.place(x=370, y=370)
+        self.btn_add.place(x=270, y=220)
 
         #btn clear
-        self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
-        self.btn_clear.place(x=358, y = 420)
+        self.btn_clear = tk.Button(self, text="Clear all fields", width=25, height=2, bg="lightgreen", fg='white', command=self.clear_all)
+        self.btn_clear.place(x=270, y = 270)
 
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
@@ -713,15 +716,17 @@ class IssueBook(tk.Frame):
 
         self.i_date_e.delete(0,tk.END)
         self.i_date_e.insert(0, self.date_1)
+        # self.i_date_e.config(status=tk.DISABLED)
 
         self.e_date_e.delete(0,tk.END)
         self.e_date_e.insert(0, self.end_date)
+        # self.e_date_e.config(status=tk.DISABLED)
 
-        self.btn_search = tk.Button(self, text="Search", width=15, height=2, bg='brown', command=self.search)
-        self.btn_search.place(x=650, y=70)
+        self.btn_search = tk.Button(self, text="Search", width=25, height=2, bg='brown',fg='white', command=self.search)
+        self.btn_search.place(x=620, y=65)
 
-        self.btn_search1 = tk.Button(self, text="Search", width=15, height=2, bg='brown', command=self.search1)
-        self.btn_search1.place(x=650, y=220)
+        self.btn_search1 = tk.Button(self, text="Search", width=25, height=2, bg='brown',fg='white', command=self.search1)
+        self.btn_search1.place(x=620, y=215)
 
         #button to add to database
         self.btn_add = tk.Button(self, text="Issue Book", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
@@ -825,7 +830,7 @@ class ViewIssue(tk.Frame):
         self.heading = tk.Label(self, text="View Issue", font=('arial 40 bold'), fg='blue')
         self.heading.place(x=400,y=0)
 
-        self.roll_l = tk.Label(self, text="Enter Roll No.", font=('arial 40 bold'), fg='blue')
+        self.roll_l = tk.Label(self, text="Enter Roll No.", font=('arial 18 bold'))
         self.roll_l.place(x=10,y=70)
 
         self.roll_e = tk.Entry(self, width=25, font=('arial 18 bold'))
@@ -833,50 +838,50 @@ class ViewIssue(tk.Frame):
        
 
         self.btn_go = tk.Button(self, text="Go!!!", width=25, height=2, bg="steelblue", fg="white", command=self.go)
-        self.btn_go.place(x=1000, y=70)
+        self.btn_go.place(x=620, y=65)
 
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
-        button.place(x=1000, y= 70)
+        button.place(x=10, y= 580)
 
         button2 = tk.Button(self, text="View Publisher",  width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubView))
-        button2.place(x=1000, y= 120)
+        button2.place(x=250, y= 580)
 
         button3 = tk.Button(self, text="Update Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubUpdate))
-        button3.place(x=1000, y= 170)
+        button3.place(x=490, y= 580)
 
         button4 = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(BookAdd))
-        button4.place(x=1000, y= 220)
+        button4.place(x=730, y= 580)
 
         button5 = tk.Button(self, text="View Book", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(BookView))
-        button5.place(x=1000, y= 270)
+        button5.place(x=970, y= 580)
 
         button6 = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(StudentAdd))
-        button6.place(x=1000, y= 320)
+        button6.place(x=10, y= 640)
 
         button7 = tk.Button(self, text="Issue Book",  width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(IssueBook))
-        button7.place(x=1000, y= 370)
+        button7.place(x=250, y= 640)
 
         button8 = tk.Button(self, text="View Issues", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(ViewIssue))
-        button8.place(x=1000, y= 420)
+        button8.place(x=490, y= 640)
 
         button9 = tk.Button(self, text="Return Books", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(Return))
-        button9.place(x=1000, y= 470)
+        button9.place(x=730, y= 640)
 
         button10 = tk.Button(self, text="Home", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(StartPage))
-        button10.place(x=1000, y= 520)
+        button10.place(x=970, y= 640)
 
         self.tree = ttk.Treeview(self,height=20, columns=3)
-        self.tree.place(x=10, y=200)
+        self.tree.place(x=10, y=150)
         self.tree["column"]=('1','2','3','4','5')
         self.tree.heading('1',text="Issue ID.", anchor=tk.W)
         self.tree.heading('2',text="Roll no.", anchor=tk.W)
@@ -940,15 +945,15 @@ class Return(tk.Frame):
         self.e_date_e = tk.Entry(self, width=25, font=('arial 18 bold'))
         self.e_date_e.place(x=270, y=320)
 
-        self.btn_search = tk.Button(self, text="Search", width=15, height=2, bg='brown', command=self.search)
-        self.btn_search.place(x=650, y=70)
+        self.btn_search = tk.Button(self, text="Search", width=15, height=2, bg='brown',fg='white', command=self.search)
+        self.btn_search.place(x=620, y=65)
     
         #button to add to database
         self.btn_add = tk.Button(self, text="Return Book", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
-        self.btn_add.place(x=600, y=600)
+        self.btn_add.place(x=270, y=370)
 
-        self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
-        self.btn_clear.place(x=500, y = 420)
+        self.btn_clear = tk.Button(self, text="Clear all fields", width=25, height=2, bg="lightgreen", fg='white', command=self.clear_all)
+        self.btn_clear.place(x=270, y = 420)
 
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
@@ -1065,5 +1070,6 @@ class Return(tk.Frame):
 app = SeaofBTCapp()
 app.geometry('1366x768+0+0')
 app.title("Library Management System")
+# app.wm_iconbitmap('icon.ico')
 app.mainloop()
 
