@@ -2,6 +2,8 @@ import tkinter as tk
 import sqlite3
 import tkinter.messagebox
 from tkinter import ttk
+import time
+import datetime
 
 LARGE_FONT= ("Verdana", 12)
 conn = sqlite3.connect('lib.db')
@@ -21,7 +23,7 @@ class SeaofBTCapp(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, PubAdd, PubView, PubUpdate, BookAdd, BookView, StudentAdd):
+        for F in (StartPage, PubAdd, PubView, PubUpdate, BookAdd, BookView, StudentAdd, IssueBook, ViewIssue, Return):
 
             frame = F(container, self)
 
@@ -64,9 +66,21 @@ class StartPage(tk.Frame):
                             command=lambda: controller.show_frame(BookView))
         button5.pack()
 
-        button5 = tk.Button(self, text="Add Student",
+        button6 = tk.Button(self, text="Add Student",
                             command=lambda: controller.show_frame(StudentAdd))
-        button5.pack()
+        button6.pack()
+
+        button7 = tk.Button(self, text="Issue Book",
+                            command=lambda: controller.show_frame(IssueBook))
+        button7.pack()
+
+        button8 = tk.Button(self, text="View Issues",
+                            command=lambda: controller.show_frame(ViewIssue))
+        button8.pack()
+
+        button9 = tk.Button(self, text="Return Books",
+                            command=lambda: controller.show_frame(Return))
+        button9.pack()
 
 class PubAdd(tk.Frame):
 
@@ -372,7 +386,7 @@ class StudentAdd(tk.Frame):
         self.faculty_e.place(x=270, y=170)
 
         #button to add to database
-        self.btn_add = tk.Button(self, text="Add Book", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
+        self.btn_add = tk.Button(self, text="Add Student", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
         self.btn_add.place(x=370, y=370)
 
         #btn clear
@@ -404,7 +418,310 @@ class StudentAdd(tk.Frame):
             except sqlite3.IntegrityError: 
                 tkinter.messagebox.showerror("Error","Check roll no once again!!!")
 
+
+class IssueBook(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.heading = tk.Label(self, text="Issue Book", font=('arial 40 bold'), fg='blue')
+        self.heading.place(x=400,y=0)
+
+        c.execute("CREATE TABLE IF NOT EXISTS issue (issue_id INTEGER PRIMARY KEY AUTOINCREMENT, book_id INTEGER NOT NULL, roll INTEGER  NOT NULL, i_date TEXT NOT NULL, e_date TEXT NOT NULL, FOREIGN KEY(book_id) REFERENCES book(book_id) ON UPDATE CASCADE, FOREIGN KEY(roll) REFERENCES student(roll) ON UPDATE CASCADE)")
+        
+        self.book_id_l = tk.Label(self, text="Enter Book ID", font=('arial 18 bold'))
+        self.book_id_l.place(x=10, y=70)
+
+        self.book_name_l = tk.Label(self, text="Book Name", font=('arial 18 bold'))
+        self.book_name_l.place(x=10, y=120)
+
+        self.num_book_l = tk.Label(self, text="No of Books left", font=('arial 18 bold'))
+        self.num_book_l.place(x=10, y=170)
+
+        self.roll_l = tk.Label(self, text="Enter Student's Roll", font=('arial 18 bold'))
+        self.roll_l.place(x=10, y=220)
+
+        self.st_name_l = tk.Label(self, text="Student Name", font=('arial 18 bold'))
+        self.st_name_l.place(x=10, y=270)
+
+        self.faculty_l = tk.Label(self, text="Faculty", font=('arial 18 bold'))
+        self.faculty_l.place(x=10, y=320)
+
+        self.i_date_l = tk.Label(self, text="ISSUE Date", font=('arial 18 bold'))
+        self.i_date_l.place(x=10, y=370)
+
+        self.e_date_l = tk.Label(self, text="Expiry Date", font=('arial 18 bold'))
+        self.e_date_l.place(x=10, y=420)
+
+
+        # entry
+        self.book_id_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.book_id_e.place(x=270, y=70)
+
+        self.book_name_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.book_name_e.place(x=270, y=120)
+
+        self.num_book_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.num_book_e.place(x=270, y=170)
+
+        self.roll_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.roll_e.place(x=270, y=220)
+
+        self.st_name_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.st_name_e.place(x=270, y=270)
+
+        self.faculty_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.faculty_e.place(x=270, y=320)
+
+        self.i_date_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.i_date_e.place(x=270, y=370)
+
+        self.e_date_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.e_date_e.place(x=270, y=420)
+
+
+        unix = time.time()
+        datestamp = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d'))
+        self.issue = time.strftime("%x")
+        self.date_1 = datetime.datetime.strptime(self.issue, "%m/%d/%y")
+        self.end_date = self.date_1 + datetime.timedelta(days=60)
+        
+
+        self.i_date_e.delete(0,tk.END)
+        self.i_date_e.insert(0, self.date_1)
+
+        self.e_date_e.delete(0,tk.END)
+        self.e_date_e.insert(0, self.end_date)
+
+        self.btn_search = tk.Button(self, text="Search", width=15, height=2, bg='brown', command=self.search)
+        self.btn_search.place(x=650, y=70)
+
+        self.btn_search1 = tk.Button(self, text="Search", width=15, height=2, bg='brown', command=self.search1)
+        self.btn_search1.place(x=650, y=220)
+
+        #button to add to database
+        self.btn_add = tk.Button(self, text="Issue Book", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
+        self.btn_add.place(x=600, y=600)
+        
+    def search(self, *args, **kwargs):
+        sql = "select * from book where book_id = ?"
+        result = c.execute(sql,(self.book_id_e.get()))
+
+        for r in result:
+            self.n1 = r[1]
+            self.n2 = r[2]
+        conn.commit()
+
+        self.book_name_e.delete(0,tk.END)
+        self.book_name_e.insert(0, str(self.n1))
+
+        self.num_book_e.delete(0,tk.END)
+        self.num_book_e.insert(0, str(self.n2))
+    
+    def search1(self, *args, **kwargs):
+        sql = "select * from student where roll=?"
+        result = c.execute(sql,(self.roll_e.get(),))
+
+        for r in result:
+            self.m1 = r[1]
+            self.m2 = r[2]
+        conn.commit()
+
+        self.st_name_e.delete(0,tk.END)
+        self.st_name_e.insert(0, str(self.m1))
+
+        self.faculty_e.delete(0,tk.END)
+        self.faculty_e.insert(0, str(self.m2))
+
+    #get method
+    def get_items(self, *args, **kwargs):
+
+        #get from entries
+        self.book_id = self.book_id_e.get()
+        self.roll = self.roll_e.get()
+        self.i_date = self.i_date_e.get()
+        self.e_date = self.e_date_e.get()
+
+        if self.book_id == '' and self.roll == '':
+            tkinter.messagebox.showinfo("Error","Please fill the entries")
+        else:
+        
+            sql = "insert into issue (book_id, roll, i_date, e_date) values (?,?,?,?)"
+            c.execute(sql, (self.book_id, self.roll, self.i_date, self.e_date))
+            q = "update book set num_book = num_book - 1 where book_id = ?"
+            c.execute(q, self.book_id)
+            conn.commit()
+                
+            tkinter.messagebox.showinfo("Success", "Successfully book issued!")
+
+
+class ViewIssue(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.heading = tk.Label(self, text="View Issue", font=('arial 40 bold'), fg='blue')
+        self.heading.place(x=400,y=0)
+
+        self.roll_l = tk.Label(self, text="Enter Roll No.", font=('arial 40 bold'), fg='blue')
+        self.roll_l.place(x=10,y=70)
+
+        self.roll_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.roll_e.place(x=270, y=70)
+       
+
+        self.btn_go = tk.Button(self, text="Go!!!", width=25, height=2, bg="steelblue", fg="white", command=self.go)
+        self.btn_go.place(x=1000, y=70)
+
+        self.tree = ttk.Treeview(self,height=20, columns=3)
+        self.tree.place(x=10, y=200)
+        self.tree["column"]=('1','2','3','4','5')
+        self.tree.heading('1',text="Issue ID.", anchor=tk.W)
+        self.tree.heading('2',text="Roll no.", anchor=tk.W)
+        self.tree.heading('3',text="Book Name", anchor=tk.W) 
+        self.tree.heading('4', text="Issue Date", anchor=tk.W)
+        self.tree.heading('5', text="Expiry Date", anchor=tk.W)
+
+
+    def go(self):
+        self.roll = self.roll_e.get()
+        items = self.tree.get_children()
+        for item in items:
+            self.tree.delete(item)
+        query = 'select issue.issue_id, issue.roll, book.book_name, issue.i_date, issue.e_date from issue inner join book on issue.book_id = book.book_id  where (issue.roll= (?));'
+        entries = c.execute(query,(self.roll_e.get(),))
+        conn.commit()
+        for row in entries:
+            self.tree.insert('',tk.END,values=row)
+
+class Return(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.heading = tk.Label(self, text="Return Book", font=('arial 40 bold'), fg='blue')
+        self.heading.place(x=400,y=0)
+
+        #label for windows
+        self.issue_id_l = tk.Label(self, text="Enter Issue ID", font=('arial 18 bold'))
+        self.issue_id_l.place(x=10, y=70)
+
+        self.roll_l = tk.Label(self, text="Student Roll No.", font=('arial 18 bold'))
+        self.roll_l.place(x=10, y=120)
+
+        self.book_id_l = tk.Label(self, text="Book ID", font=('arial 18 bold'))
+        self.book_id_l.place(x=10, y=170)
+
+        self.book_name_l = tk.Label(self, text="Book Name", font=('arial 18 bold'))
+        self.book_name_l.place(x=10, y=220)
+
+        self.i_date_l = tk.Label(self, text="Issued Date", font=('arial 18 bold'))
+        self.i_date_l.place(x=10, y=270)
+
+        self.e_date_l = tk.Label(self, text="Expiry Date", font=('arial 18 bold'))
+        self.e_date_l.place(x=10, y=320)
+
+        # entry
+        self.issue_id_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.issue_id_e.place(x=270, y=70)
+
+        self.roll_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.roll_e.place(x=270, y=120)
+
+        self.book_id_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.book_id_e.place(x=270, y=170)
+
+        self.book_name_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.book_name_e.place(x=270, y=220)
+
+        self.i_date_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.i_date_e.place(x=270, y=270)
+
+        self.e_date_e = tk.Entry(self, width=25, font=('arial 18 bold'))
+        self.e_date_e.place(x=270, y=320)
+
+        self.btn_search = tk.Button(self, text="Search", width=15, height=2, bg='brown', command=self.search)
+        self.btn_search.place(x=650, y=70)
+    
+        #button to add to database
+        self.btn_add = tk.Button(self, text="Return Book", width=25, height=2, bg="steelblue", fg="white", command=self.get_items)
+        self.btn_add.place(x=600, y=600)
+
+        self.btn_clear = tk.Button(self, text="Clear all fields", width=18, height=2, bg="lightgreen", fg='white', command=self.clear_all)
+        self.btn_clear.place(x=500, y = 420)
+
+        button2 = tk.Button(self, text="RESET",
+                            command=lambda: controller.show_frame(Return))
+        button2.place(x=1150, y=110)
+        
+    def search(self, *args, **kwargs):
+        sql1 = "select issue.roll, issue.book_id, book.book_name, issue.i_date, issue.e_date from issue inner join book on issue.book_id = book.book_id  where (issue.issue_id= (?))"
+        result = c.execute(sql1,(self.issue_id_e.get(),))
+
+        for r in result:
+            self.n1 = r[0]
+            self.n0 = r[1]
+            self.n2 = r[2]
+            self.n3 = r[3]
+            self.n4 = r[4]
+            
+        conn.commit()
+
+        self.book_name_e.delete(0,tk.END)
+        self.book_name_e.insert(0, str(self.n2))
+        self.book_name_e.config(state=tk.DISABLED)
+
+        self.book_id_e.delete(0,tk.END)
+        self.book_id_e.insert(0, str(self.n0))
+        self.book_id_e.config(state=tk.DISABLED)
+
+        self.roll_e.delete(0,tk.END)
+        self.roll_e.insert(0, str(self.n1))
+        self.roll_e.config(state=tk.DISABLED)
+        
+        self.i_date_e.delete(0,tk.END)
+        self.i_date_e.insert(0, str(self.n3))
+        self.i_date_e.config(state=tk.DISABLED)
+
+        self.e_date_e.delete(0,tk.END)
+        self.e_date_e.insert(0, str(self.n4))
+        self.e_date_e.config(state=tk.DISABLED)
+
+        self.n1 = ''
+        self.n2 = ''
+        self.n3 = ''
+        self.n4 = ''
+        self.n0 = ''
+ 
+    #get method
+    def get_items(self, *args, **kwargs):
+
+        #get from entries
+        self.issue_id = self.issue_id_e.get()
+        self.roll = self.roll_e.get()
+        self.book_name = self.book_name_e.get()
+        self.i_date = self.i_date_e.get()
+        self.e_date = self.e_date_e.get()
+        self.book_id = self.book_id_e.get()
+
+        if self.book_name == '' and self.roll == '' and self.i_date == '' and self.e_date == '':
+            tkinter.messagebox.showinfo("Error","No issues")
+        else:
+        
+            sql = "delete from issue where issue_id = ?"
+            c.execute(sql, (self.issue_id,))
+            q = "update book set num_book = num_book + 1 where book_id = ?"
+            c.execute(q, (self.book_id,))
+            conn.commit()
+                
+            tkinter.messagebox.showinfo("Success", "Successfully book returned!")
+
+    def clear_all(self, *args, **kwargs):
+        self.issue_id_e.delete(0, tk.END)
+        self.book_name_e.delete(0, tk.END)
+        self.roll_e.delete(0, tk.END)
+        self.i_date_e.delete(0, tk.END)
+        self.e_date_e.delete(0, tk.END)
+        self.book_id_e.delete(0, tk.END)
+
+
+
 app = SeaofBTCapp()
 app.geometry('1366x768+0+0')
+app.title("Library Management System")
 app.mainloop()
 
