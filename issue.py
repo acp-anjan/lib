@@ -164,14 +164,26 @@ class PubAdd:
         if self.book_id == '' and self.roll == '':
             tkinter.messagebox.showinfo("Error","Please fill the entries")
         else:
-        
-            sql = "insert into issue (book_id, roll, i_date, e_date) values (?,?,?,?)"
-            c.execute(sql, (self.book_id, self.roll, self.i_date, self.e_date))
-            q = "update book set num_book = num_book - 1 where book_id = ?"
-            c.execute(q, self.book_id)
-            conn.commit()
-                
-            tkinter.messagebox.showinfo("Success", "Successfully book issued!")
+            result = c.execute("select book_id from issue where (roll = (?))", (self.roll,))
+            b = []
+            for i in result:
+                b.append(i)
+            a=result.fetchall()
+            e =int(self.book_id)
+            f = ()
+            f = (e,)
+            d = []
+            d.append(f)
+            if d[0] in b:
+                tkinter.messagebox.showinfo("Flaws","This book has already been issued to this student")
+            else:
+                sql = "insert into issue (book_id, roll, i_date, e_date) values (?,?,?,?)"
+                c.execute(sql, (self.book_id, self.roll, self.i_date, self.e_date))
+                q = "update book set num_book = num_book - 1 where book_id = ?"
+                c.execute(q, self.book_id)
+                conn.commit()
+                    
+                tkinter.messagebox.showinfo("Success", "Successfully book issued!")
             
                 
 

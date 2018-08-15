@@ -24,6 +24,9 @@ class SeaofBTCapp(tk.Tk):
 
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
+        
+        refresh = tk.Button(container, text='Refresh', command = container.update())
+        refresh.grid(row=2, column=0, sticky=tk.W)
 
         self.frames = {}
 
@@ -47,7 +50,9 @@ class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
-
+        frame = tk.Frame(self, borderwidth=5)
+        refresh = tk.Button(frame, text='Refresh', command = frame.update())
+        refresh.grid(row=2, column=0, sticky=tk.W)
         conn = sqlite3.connect('lib.db')
         c = conn.cursor()
 
@@ -100,13 +105,18 @@ class StartPage(tk.Frame):
                             command=lambda: controller.show_frame(StartPage))
         button10.place(x=1000, y= 520)
 
+        refresh = tk.Button(frame, text='Refresh', command = frame.update())
+        refresh.grid(row=2, column=0, sticky=tk.W)
+
         conn.close()
 
 class PubAdd(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-
+        frame = tk.Frame(self, borderwidth=5)
+        refresh = tk.Button(frame, text='Refresh', command = frame.update())
+        refresh.grid(row=2, column=0, sticky=tk.W)
         conn = sqlite3.connect('lib.db')
         c = conn.cursor()
 
@@ -206,9 +216,14 @@ class PubView(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        frame = tk.Frame(self, borderwidth=5)
+        refresh = tk.Button(frame, text='Refresh', command = frame.update())
+        refresh.grid(row=2, column=0, sticky=tk.W)
 
         conn = sqlite3.connect('lib.db')
         c = conn.cursor()
+
+        
         
         button = tk.Button(self, text="Add Publisher", width=25, height=2, bg="steelblue", fg="white",
                             command=lambda: controller.show_frame(PubAdd))
@@ -253,6 +268,12 @@ class PubView(tk.Frame):
         self.heading = tk.Label(self, text="View Publisher", font=('arial 40 bold'), fg='blue')
         self.heading.place(x=400,y=0)
 
+        # tree = ttk.Treeview(self,height=20, columns=3)
+        # tree.place(x=100, y=150)
+        # tree["column"]=('1','2','3')
+        # tree.heading('1',text="pub_id", anchor=tk.W)
+        # tree.heading('2',text="Publisher Name", anchor=tk.W) 
+        # tree.heading('3', text="Adderss", anchor=tk.W)
         self.btn_view = tk.Button(self, text="Show publishers", width=18, height=2, bg='maroon2', fg='white', command=self.view)
         self.btn_view.place(x=100, y=100)
         
@@ -271,7 +292,7 @@ class PubView(tk.Frame):
         entries = self.execute_db_query(query)
         for row in entries:
             tree.insert('',tk.END,values=row)
-
+        
 
     def execute_db_query(self, query, parameters=()):
         with sqlite3.connect('lib.db') as conn:
@@ -545,9 +566,6 @@ class BookView(tk.Frame):
                             command=lambda: controller.show_frame(StartPage))
         button10.place(x=970, y= 610)
         
-        self.btn_view = tk.Button(self, text="Show Books", width=18, height=2, bg='maroon2', fg='white', command=self.view)
-        self.btn_view.place(x=10, y=40)
-    def view(self, *args, **kwargs):
         self.tree = ttk.Treeview(self, height=20, columns=3)
         self.tree.place(x=10, y=100)
         self.tree["column"]=('1','2','3','4','5','6')
@@ -851,29 +869,14 @@ class IssueBook(tk.Frame):
         if self.book_id == '' and self.roll == '':
             tkinter.messagebox.showinfo("Error","Please fill the entries")
         else:
-            result = c.execute("select book_id from issue where (roll = (?))", (self.roll,))
-            b = []
-            for i in result:
-                b.append(i)
-            a=result.fetchall()
-            e =int(self.book_id)
-            f = ()
-            f = (e,)
-            d = []
-            d.append(f)
-            if int(self.num_book_e.get())<1:
-                tkinter.messagebox.showerror("Error", "Sorry no book left")
-            elif d[0] in b:
-                tkinter.messagebox.showinfo("Flaws","This book has already been issued to this student")
-            else:
-                sql = "insert into issue (book_id, roll, i_date, e_date) values (?,?,?,?)"
-                c.execute(sql, (self.book_id, self.roll, self.i_date, self.e_date))
-                q = "update book set num_book = num_book - 1 where book_id = ?"
-                c.execute(q, self.book_id)
-                conn.commit()
-
-                tkinter.messagebox.showinfo("Success", "Successfully book issued!")
-
+        
+            sql = "insert into issue (book_id, roll, i_date, e_date) values (?,?,?,?)"
+            c.execute(sql, (self.book_id, self.roll, self.i_date, self.e_date))
+            q = "update book set num_book = num_book - 1 where book_id = ?"
+            c.execute(q, self.book_id)
+            conn.commit()
+                
+            tkinter.messagebox.showinfo("Success", "Successfully book issued!")
 
 
 class ViewIssue(tk.Frame):
@@ -936,10 +939,6 @@ class ViewIssue(tk.Frame):
                             command=lambda: controller.show_frame(StartPage))
         button10.place(x=970, y= 640)
 
-        # self.btn_view = tk.Button(self, text="Show Books", width=18, height=2, bg='maroon2', fg='white', command=self.view)
-        # self.btn_view.place(x=10, y=40)
-    
-    def go(self, *args, **kwargs):
         self.tree = ttk.Treeview(self,height=20, columns=3)
         self.tree.place(x=10, y=150)
         self.tree["column"]=('1','2','3','4','5')
@@ -949,6 +948,8 @@ class ViewIssue(tk.Frame):
         self.tree.heading('4', text="Issue Date", anchor=tk.W)
         self.tree.heading('5', text="Expiry Date", anchor=tk.W)
 
+
+    def go(self):
         self.roll = self.roll_e.get()
         items = self.tree.get_children()
         for item in items:
@@ -1130,6 +1131,7 @@ class Return(tk.Frame):
 
 
 app = SeaofBTCapp()
+# app.update()
 app.geometry('1366x768+0+0')
 app.title("Library Management System")
 # app.wm_iconbitmap('icon.ico')
